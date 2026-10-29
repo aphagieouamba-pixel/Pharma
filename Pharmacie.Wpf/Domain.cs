@@ -1,0 +1,8 @@
+using System.IO;
+using System.Text.Json;
+namespace Pharmacie.Wpf;
+public class Product{public string Reference{get;set;}="";public string Name{get;set;}="";public string Category{get;set;}="";public decimal Price{get;set;}public int Stock{get;set;}public int Minimum{get;set;}public string Lot{get;set;}="";public DateTime Expiry{get;set;}public string Status=>Stock==0?"Rupture":Stock<=Minimum?"Stock faible":"Disponible";}
+public class Sale{public string Number{get;set;}="";public DateTime Date{get;set;}public decimal Total{get;set;}public string Payment{get;set;}="";}
+public class PharmacyData{public List<Product> Products{get;set;}=[];public List<Sale> Sales{get;set;}=[];}
+public static class DataStore{static readonly string FilePath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"PharmaFlow","data.json");public static PharmacyData Load(){try{if(File.Exists(FilePath))return JsonSerializer.Deserialize<PharmacyData>(File.ReadAllText(FilePath))??Seed();}catch{}return Seed();}public static void Save(PharmacyData data){Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);File.WriteAllText(FilePath,JsonSerializer.Serialize(data,new JsonSerializerOptions{WriteIndented=true}));}static PharmacyData Seed()=>new(){Products=[new(){Reference="AMX-500",Name="Amoxicilline 500 mg",Category="Antibiotiques",Price=3500,Stock=42,Minimum=10,Lot="AMX24A",Expiry=DateTime.Today.AddMonths(8)},new(){Reference="PAR-1000",Name="Paracétamol 1 g",Category="Antalgique",Price=1200,Stock=8,Minimum=12,Lot="PAR25B",Expiry=DateTime.Today.AddMonths(3)},new(){Reference="VIT-C",Name="Vitamine C 500 mg",Category="Vitamines",Price=2800,Stock=0,Minimum=8,Lot="VTC24C",Expiry=DateTime.Today.AddMonths(12)}]};}
+

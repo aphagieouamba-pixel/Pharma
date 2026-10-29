@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.pdb
+*.cache
+.nuget-home/
+Pharmacie.Wpf/PharmaFlowMVC/
